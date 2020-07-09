@@ -79,32 +79,25 @@ class ParserBase:
                 "fields", definition.get("values", definition.get("methods", []))
             ):
                 field["type"] = field.get("type", None)
-                parsed_options = self.process_field_options(field.get("options", {}))
                 fields_output.append(
                     self.process_field(
                         field,
                         current_definition,
                         meta,
-                        parsed_options,
                         self._field_template_map[definition.get("type")],
                     )
                 )
 
-            parsed_options = self.process_definition_options(
-                definition.get("options", {})
-            )
             definitions_output.append(
                 self.process_definition(
                     definition,
                     meta,
                     fields_output,
-                    parsed_options,
                     self._definition_template_map[definition.get("type")],
                 )
             )
 
-        parsed_options = self.process_meta_options(meta.get("options"))
-        return self.process_meta(meta, definitions_output, parsed_options)
+        return self.process_meta(meta, definitions_output)
 
     def process_field_options(self, options):
         parsed_options = []
@@ -114,7 +107,8 @@ class ParserBase:
             parsed_options.append(self.field_option_template.format(**option))
         return parsed_options
 
-    def process_field(self, field, definition, meta, parsed_options, template):
+    def process_field(self, field, definition, meta, template):
+        parsed_options = self.process_field_options(field.get("options", {}))
         comment = field.get("comment")
         comment = self.field_comment_template.format(comment=comment) if comment else ""
         return template.format(
@@ -131,9 +125,8 @@ class ParserBase:
             parsed_options.append(self.definition_option_template.format(**option))
         return parsed_options
 
-    def process_definition(
-        self, definition, meta, parsed_fields, parsed_options, template
-    ):
+    def process_definition(self, definition, meta, parsed_fields, template):
+        parsed_options = self.process_definition_options(definition.get("options", {}))
         comment = definition.get("comment")
         comment = (
             self.definition_comment_template.format(comment=comment) if comment else ""
@@ -155,7 +148,8 @@ class ParserBase:
             parsed_options.append(self.meta_option_template.format(**option))
         return parsed_options
 
-    def process_meta(self, meta, parsed_definitions, parsed_options):
+    def process_meta(self, meta, parsed_definitions):
+        parsed_options = self.process_meta_options(meta.get("options", {}))
         comment = meta.get("comment")
         comment = self.meta_comment_template.format(comment=comment) if comment else ""
         return self.meta_template.format(
@@ -222,7 +216,7 @@ class ParserBase:
 
             # Fill response
             file_name = self.get_filename(proto_file.name)
-            if file_name:
+            if file_name and result:
                 f = response.file.add()
                 f.name = file_name
                 f.content = result
