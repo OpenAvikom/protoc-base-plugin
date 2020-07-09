@@ -2,3 +2,4 @@
 *.pkl
 *.pyc
 generated
+protoc-gen-test

@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: protoc-base-plugin
+Version: 0.1.0
+Summary: A 
+Home-page: https://gitlab.ub.uni-bielefeld.de/avikom/protoc-base-plugin.git
+Author: Alexander Neumann
+Author-email: aleneum@gmail.com
+License: MIT
+Description: # protoc-base-plugin
+        
+        Provides means to generate an easy-to-process Abstract syntax tree (AST) in the shape of a python dictionary which can be used to generate code from protocol buffer definitions.
+        This can be used as a protoc plugin or standalone.
+        
+Platform: UNKNOWN
+Description-Content-Type: text/markdown

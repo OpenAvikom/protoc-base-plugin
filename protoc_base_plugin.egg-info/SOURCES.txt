@@ -1,0 +1,15 @@
+README.md
+setup.py
+protoc-base-plugin/__init__.py
+protoc-base-plugin/builder.py
+protoc-base-plugin/collect.py
+protoc-base-plugin/parser.py
+protoc-base-plugin/utils.py
+protoc-base-plugin/version.py
+protoc-base-plugin/generators/__init__.py
+protoc-base-plugin/generators/json_parser.py
+protoc_base_plugin.egg-info/PKG-INFO
+protoc_base_plugin.egg-info/SOURCES.txt
+protoc_base_plugin.egg-info/dependency_links.txt
+protoc_base_plugin.egg-info/entry_points.txt
+protoc_base_plugin.egg-info/top_level.txt
