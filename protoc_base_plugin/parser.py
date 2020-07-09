@@ -4,30 +4,42 @@ import itertools
 import importlib
 import pickle
 import re
+import select
 from pathlib import Path
-from os.path import splitext, abspath
+from os.path import splitext, abspath, exists
 
 from google.protobuf.compiler import plugin_pb2 as plugin
 from google.protobuf.descriptor_pb2 import DescriptorProto, EnumDescriptorProto, ServiceDescriptorProto
 
 from .builder import build_tree, inject_docs
+from .utils import parse_parameters
 
 
 class ParserBase:
 
-    def __init__(self, comments=False, options=False, skip_dependencies=True):
+    def __init__(self, comments=False, options=False, skip_dependencies=True, test_request='request.pkl'):
         self.with_comments = comments
         self.with_options = options
         self.skip_dependencies = skip_dependencies
+        self.test_request = test_request
 
-    def get_filename(self, proto_name):
+    @staticmethod
+    def get_filename(proto_name: str) -> str:
         raise NotImplementedError("A Parser needs to override 'get_filename' to determine the target file name")
 
-    def process_raw(self, data):
-        pass
+    def process_raw(self, data):        
+        return data
 
-    def parse(self):
-        data = sys.stdin.buffer.read()
+    def load_request(self):        
+        if select.select([sys.stdin,], [], [], 0.1)[0]:
+            data = sys.stdin.buffer.read()
+        else:
+            if self.test_request and exists(self.test_request):
+                with open(self.test_request, 'rb') as f:
+                    return pickle.load(f)
+            raise RuntimeError("No data to process since test_request does not exist "
+                               "and no data provided on stdin.")
+ 
         request = plugin.CodeGeneratorRequest()
         request.ParseFromString(data)
 
@@ -46,9 +58,14 @@ class ParserBase:
             except ValueError:
                 pass
 
+        return request
+
+    def parse(self):
+        request = self.load_request()
         self.process(request)
 
     def process(self, request):
+        response = plugin.CodeGeneratorResponse()
         for proto_file in request.proto_file:
             if self.skip_dependencies and proto_file.name not in request.file_to_generate:
                 continue
@@ -57,10 +74,10 @@ class ParserBase:
                 inject_docs(proto_file, result['definitions'])
 
             result = self.process_raw(result)
-            response = plugin.CodeGeneratorResponse()
 
             # Fill response
             f = response.file.add()
             f.name = self.get_filename(proto_file.name)
             f.content = result
-            # f.content = json.dumps(result, indent=2)
+        output = response.SerializeToString()
+        sys.stdout.buffer.write(output)

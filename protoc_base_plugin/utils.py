@@ -7,11 +7,11 @@ def parse_options(options):
         return options
 
 
-def parse_parameters(parameters):
+def parse_parameters(parameters, assert_key=None):
     key, value = parameters.split('=')
-    assert(key == 'pb2_root')
+    if assert_key:
+        assert key == assert_key
     return value
-
 
 def generate_docs(proto_file):
     if proto_file.source_code_info.ByteSize():

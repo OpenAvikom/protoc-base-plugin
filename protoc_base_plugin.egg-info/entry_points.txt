@@ -1,3 +1,0 @@
-[console_scripts]
-protoc-gen-json = protoc_base_plugin.generators.json_parser:main
-
