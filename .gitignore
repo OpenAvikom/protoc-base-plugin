@@ -1,6 +1,7 @@
 .vscode
+generated
+out
 *.pkl
 *.pyc
-generated
-protoc-gen-test
 *.egg-info
+protoc-gen-test
