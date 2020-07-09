@@ -19,5 +19,6 @@ class NullParser(ParserBase):
         except AssertionError:
             pass
 
+
 def main():
     NullParser().parse()
