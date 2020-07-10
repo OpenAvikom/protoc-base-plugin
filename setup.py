@@ -33,7 +33,7 @@ setup(
     license="MIT",
     entry_points={
         "console_scripts": [
-            "protoc-gen-null = protoc_base_plugin.generators.null_parser:main"
+            "protoc-gen-pkl = protoc_base_plugin.generators.null_parser:main"
         ],
     },
 )

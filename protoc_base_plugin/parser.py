@@ -221,8 +221,8 @@ class ParserBase:
                 f.name = file_name
                 f.content = result
 
-            output = response.SerializeToString()
-            self.process_output(output)
+        output = response.SerializeToString()
+        self.process_output(output)
 
     @staticmethod
     def process_output(output):

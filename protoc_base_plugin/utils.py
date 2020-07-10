@@ -23,6 +23,8 @@ def camelCase(input_string):
 
 
 def PascalCase(input_string):
+    if input_string.upper() == input_string:
+        return input_string
     return Capitalize(camelCase(input_string))
 
 
