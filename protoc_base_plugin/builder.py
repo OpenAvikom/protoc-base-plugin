@@ -49,7 +49,7 @@ def build_tree(proto_file, with_options=False):
                 }
                 if with_options and field_descriptor.options.ByteSize():
                     field["options"] = parse_options(field_descriptor.options)
-                if field["type"] == "TYPE_MESSAGE":
+                if field["type"] in ["TYPE_MESSAGE", "TYPE_ENUM"]:
                     field["type_name"] = field_descriptor.type_name[1:]
                 fields.append(field)
             data.update({"type": "Message", "fields": fields})
