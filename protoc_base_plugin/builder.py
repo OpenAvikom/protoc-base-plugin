@@ -73,6 +73,7 @@ def build_tree(proto_file, with_options=False):
                             "output_type": v.output_type[1:],
                             "server_streaming": v.server_streaming,
                             "client_streaming": v.client_streaming,
+                            "extensions": v.options.SerializeToString(),
                         }
                         for v in item.method
                     ],

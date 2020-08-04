@@ -19,7 +19,8 @@ def Capitalize(input_string):
 
 
 def camelCase(input_string):
-    return re_camel_case.sub(lambda pat: pat.group(1).upper(), input_string)
+    tmp = re_camel_case.sub(lambda pat: pat.group(1).upper(), input_string)
+    return tmp[0].lower() + tmp[1:]  # make sure first letter is lower case
 
 
 def PascalCase(input_string):
