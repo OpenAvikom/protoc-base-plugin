@@ -192,7 +192,9 @@ class ParserBase:
                 # reload
                 request.ParseFromString(data)
             except ValueError:
-                pass
+                raise AttributeError(
+                    "Options shall be included but no 'pb2_path' has been not been passed. Use '--<gen_name>_out=pb_path=<root_of_pb2_files>:<out_path>' or set 'options=False' in constructor."
+                )
 
         return request
 

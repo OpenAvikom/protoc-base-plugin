@@ -85,7 +85,7 @@ def build_tree(proto_file, with_options=False):
         definitions.append(data)
 
     output = {"definitions": definitions, "filename": proto_file.name}
-    if with_options and proto_file.options.ByteSize():
+    if proto_file.options.ByteSize():
         output["options"] = parse_options(proto_file.options)
     return output
 
