@@ -40,12 +40,8 @@ def build_tree(proto_file, with_options=False):
             for field_descriptor in item.field:
                 field = {
                     "name": field_descriptor.name,
-                    "type": str(
-                        field_descriptor.Type.keys()[field_descriptor.type - 1]
-                    ),
-                    "label": str(
-                        field_descriptor.Label.keys()[field_descriptor.label - 1]
-                    ),
+                    "type": field_descriptor.Type.Name(field_descriptor.type),
+                    "label": field_descriptor.Label.Name(field_descriptor.label),
                 }
                 if with_options and field_descriptor.options.ByteSize():
                     field["options"] = parse_options(field_descriptor.options)
